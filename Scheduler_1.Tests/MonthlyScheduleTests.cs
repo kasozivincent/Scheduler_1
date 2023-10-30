@@ -106,6 +106,22 @@ public class MonthlyScheduleTests
     }
     
     [Test]
+    public void CalculateDetails_RecurringMonthlyScheduleEnabledInvalidDuration_ThrowsException()
+    {
+        var configuration = new ScheduleConfiguration
+        {
+            StartDate = new DateTime(2020, 1, 1),
+            EndDate = new DateTime(2019, 1, 1),
+            CurrentDate = new DateTime(2020, 5, 5),
+            Enabled = true,
+            ScheduleType = ScheduleType.Recurring,
+            Occurs = Occurs.Monthly,
+        };
+        Assert.That(() => Scheduler.CalculateDetails(configuration), 
+            Throws.ArgumentException.With.Message.EqualTo("Invalid Schedule dates"));
+    }
+    
+    [Test]
     public void CalculateDetails_RecurringMonthlyScheduleEnabledExpiredDate_ReturnsErrorDetails()
     {
         var currentDate = new DateTime(2023, 10, 1);

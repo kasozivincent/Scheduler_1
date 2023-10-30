@@ -26,12 +26,14 @@ public class ScheduleConfiguration
     public DateTime? EndDate { get; set; }
 }
 
-public class Scheduler
+public static class Scheduler
 {
     public static ScheduleDetails CalculateDetails(ScheduleConfiguration configuration)
     {
         if (configuration.ScheduleType == ScheduleType.Once)
             return OnceScheduleDetails(configuration);
+        if (configuration.StartDate >= configuration.EndDate)
+            throw new ArgumentException("Invalid Schedule dates");
         return configuration.Occurs switch
         {
             Occurs.Daily => RecurringDailyScheduleDetails(configuration),

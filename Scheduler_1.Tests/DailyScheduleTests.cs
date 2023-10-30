@@ -45,6 +45,22 @@ public class DailyScheduleTests
     }
     
     [Test]
+    public void CalculateDetails_RecurringDailyScheduleEnabledInvalidDuration_ThrowsException()
+    {
+        var configuration = new ScheduleConfiguration
+        {
+            StartDate = new DateTime(2020, 1, 1),
+            EndDate = new DateTime(2019, 1, 1),
+            CurrentDate = new DateTime(2020, 5, 5),
+            Enabled = true,
+            ScheduleType = ScheduleType.Recurring,
+            Occurs = Occurs.Daily,
+        };
+        Assert.That(() => Scheduler.CalculateDetails(configuration), 
+            Throws.ArgumentException.With.Message.EqualTo("Invalid Schedule dates"));
+    }
+    
+    [Test]
     public void CalculateDetails_RecurringDailyScheduleDisabled_ReturnsErrorMessage()
     {
         var configuration = new ScheduleConfiguration
@@ -64,6 +80,7 @@ public class DailyScheduleTests
             Assert.That(details.Description, Is.EqualTo("Schedule was canceled"));
         });
     }
+    
     [Test]
     public void CalculateDetails_RecurringDailyScheduleExpired_ReturnsInvalidDetails()
     {

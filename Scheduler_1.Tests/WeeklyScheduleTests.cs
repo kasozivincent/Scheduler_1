@@ -66,6 +66,21 @@ public class WeeklyScheduleTests
     }
     
     
+    [Test]
+    public void CalculateDetails_RecurringWeeklyScheduleEnabledInvalidDuration_ThrowsException()
+    {
+        var configuration = new ScheduleConfiguration
+        {
+            StartDate = new DateTime(2020, 1, 1),
+            EndDate = new DateTime(2019, 1, 1),
+            CurrentDate = new DateTime(2020, 5, 5),
+            Enabled = true,
+            ScheduleType = ScheduleType.Recurring,
+            Occurs = Occurs.Weekly,
+        };
+        Assert.That(() => Scheduler.CalculateDetails(configuration), 
+            Throws.ArgumentException.With.Message.EqualTo("Invalid Schedule dates"));
+    }
     
     [Test]
     public void CalculateDetails_RecurringWeeklyScheduleEnabledNoEndDate_ReturnsValidDetails()
